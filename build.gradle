@@ -1,0 +1,70 @@
+buildscript {
+  repositories { maven { url "http://repo.springsource.org/libs-snapshot" } }
+}
+
+apply plugin: 'java'
+
+task setToJava8 << {
+                project.sourceCompatibility = 1.8
+                project.targetCompatibility = 1.8
+            }
+            
+test {
+    scanForTestClasses = false
+    // probably have to tweak the include and exclude patterns, depending on the naming scheme you use
+    include '**/*Test.*'
+    exclude '**/*Abstract*.*'
+}
+
+
+jar {
+    baseName = 'testing01'
+    version =  '0.1.0'
+}
+
+configurations.all {
+  resolutionStrategy {
+    force 'commons-codec:commons-codec:1.7'
+   }
+  exclude group: 'asm', module: 'asm'
+  exclude group: 'asm', module: 'asm-all'
+}
+
+
+repositories {
+  mavenCentral()
+  maven { url "http://repo.springsource.org/libs-snapshot" }
+  maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+}
+
+dependencies {
+  compile("org.springframework:spring-context:4.0.5.RELEASE")
+  compile "com.fasterxml.jackson.core:jackson-annotations:2.4.0"
+  compile "com.fasterxml.jackson.core:jackson-core:2.4.0"
+  compile "com.fasterxml.jackson.core:jackson-databind:2.4.0"
+  compile('org.apache.xbean:xbean-finder:3.17') {force = true}
+  compile('org.ow2.asm:asm-all:5.0.2') {force = true}
+  compile "com.netflix.astyanax:astyanax:latest.release"
+  compile "commons-beanutils:commons-beanutils:latest.release"
+  compile "commons-collections:commons-collections:latest.release"
+  
+  
+  testCompile "org.apache.cassandra:cassandra-all:1.2.16"
+  testCompile "org.hamcrest:hamcrest-all:1.3"
+  testCompile "org.springframework:spring-test:4.0.0.RELEASE"
+  testCompile "org.mockito:mockito-all:1.9.5"
+  testCompile "junit:junit:4.11"
+  testCompile "org.kubek2k:springockito-annotations:1.0.9"
+  testCompile "edu.stanford.ppl:snaptree:0.1"  
+  
+  
+  testCompile("org.cassandraunit:cassandra-unit:1.1.2.1") {
+	  exclude(module: 'cassandra-all')
+	  exclude(module: 'cassandra-thrift')
+	}
+  
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}

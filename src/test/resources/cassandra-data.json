@@ -1,0 +1,24 @@
+{
+    "name" : "productKS",
+    "columnFamilies" : [
+    {
+        "name" : "ProductCF",
+        "comparatorType" : "CompositeType(UTF8Type,UUIDType,UTF8Type,IntegerType,UTF8Type,IntegerType,UTF8Type)",
+		"keyType" : "LongType",
+		"defaultColumnValueType" : "UTF8Type"
+    },
+    {
+        "name" : "AuditLog",
+        "comparatorType" : "TimeUUIDType",
+		"keyType" : "LongType",
+		"defaultColumnValueType" : "UTF8Type"     
+    },
+    {
+        "name" : "CustomerProductCounter",
+        "comparatorType" : "UTF8Type",
+		"keyType" : "LongType",
+		"defaultColumnValueType" : "CounterColumnType"     
+    }
+    ]
+    
+}
